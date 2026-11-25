@@ -1,6 +1,6 @@
 # 奶蛙 · Milofrog
 
-一只黄色、无尾、会捧腹大笑的桌面伙伴。
+一只黄色会捧腹大笑的桌面伙伴。
 
 ![奶蛙动作预览](docs/milofrog-preview.gif)
 

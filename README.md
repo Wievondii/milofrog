@@ -6,12 +6,14 @@
 
 | 版本 | 下载 |
 | --- | --- |
-| Codex 智能伙伴 | [Codex 素材包](https://github.com/Wievondii/milofrog/releases/latest/download/milofrog-codex.zip) |
+| Codex 智能伙伴 | [直接领养奶蛙](https://chatgpt.com/s/sharepet_6b06bf8b556c81919d76d24ad2bb4262) |
 | 独立 Windows 桌宠 | [Milofrog.exe](https://github.com/Wievondii/milofrog/releases/latest/download/Milofrog.exe) |
 
 ## Codex 智能伙伴
 
-解压 Codex 素材包。在支持自定义宠物的 Codex 或 ChatGPT Work 客户端里启用 Pets，把 `spritesheet.png` 作为附件，并告诉 Codex：
+打开[奶蛙领养链接](https://chatgpt.com/s/sharepet_6b06bf8b556c81919d76d24ad2bb4262)，登录 ChatGPT，按页面提示将奶蛙添加到你的宠物列表。领养后可以在支持 Pets 的客户端中选用。领养会为你的账号创建一份独立副本。
+
+如果要编辑或重新创作，可以下载 [Codex 素材包](https://github.com/Wievondii/milofrog/releases/latest/download/milofrog-codex.zip)。在支持自定义宠物的客户端里启用 Pets，把 `spritesheet.png` 作为附件，并告诉 Codex：
 
 > 请用我附上的原始精灵图，通过 Pets 创建名叫「奶蛙」的自定义宠物。请验证并使用这张图，保留原有动作帧。
 

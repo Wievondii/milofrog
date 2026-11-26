@@ -39,14 +39,15 @@ internal sealed class PetWindow : Window
 {
     private enum Action { Idle, Right, Left, Wave, Laugh, Sad, Wait, Think, Review, Look, LookBack }
 
-    private const int FramesPerSecond = 30;
+    private const int FramesPerSecond = 60;
     private const int AtlasColumns = 16;
-    private static readonly int[] Counts = { 32, 23, 23, 19, 22, 35, 29, 28, 29, 8, 8 };
+    private static readonly int[] Counts = { 63, 46, 46, 38, 44, 70, 58, 56, 58, 8, 8 };
     private readonly BitmapSource[][] sprites = new BitmapSource[Counts.Length][];
     private readonly Image image = new Image { Stretch = Stretch.Uniform };
     private readonly Stopwatch clock = Stopwatch.StartNew();
     private readonly DispatcherTimer clickTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(Forms.SystemInformation.DoubleClickTime) };
     private Action current;
+    private BitmapSource displayedFrame;
     private long started;
     private long until;
     private long nextIdleGesture = 26000;
@@ -89,7 +90,7 @@ internal sealed class PetWindow : Window
         using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("milofrog.png"))
         {
             var bitmap = BitmapFrame.Create(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
-            if (bitmap.PixelWidth != AtlasColumns * 192 || bitmap.PixelHeight != 16 * 208)
+            if (bitmap.PixelWidth != AtlasColumns * 192 || bitmap.PixelHeight != 31 * 208)
                 throw new InvalidDataException("奶蛙图集尺寸有误。");
             int index = 0;
             for (int row = 0; row < Counts.Length; row++)
@@ -241,7 +242,11 @@ internal sealed class PetWindow : Window
             }
         }
         var frame = sprites[row][col];
-        if (image.Source != frame) image.Source = frame;
+        if (displayedFrame != frame)
+        {
+            displayedFrame = frame;
+            image.Source = frame;
+        }
     }
 
     internal void StartSmokeTest(string report)
@@ -254,7 +259,7 @@ internal sealed class PetWindow : Window
                     throw new InvalidOperationException("窗口设置有误。");
                 int total = 0;
                 foreach (var row in sprites) total += row.Length;
-                if (total != 256) throw new InvalidOperationException("帧数有误。");
+                if (total != 495) throw new InvalidOperationException("帧数有误。");
                 foreach (Action action in new[] { Action.Right, Action.Left, Action.Wave, Action.Laugh, Action.Sad, Action.Wait, Action.Think, Action.Review })
                 {
                     Play(action);
@@ -271,11 +276,12 @@ internal sealed class PetWindow : Window
                 measure = delegate
                 {
                     if (image.Source != previous) { changes++; previous = image.Source; }
-                    if (measurement.ElapsedMilliseconds < 2000) return;
+                    if (measurement.ElapsedMilliseconds < 5000) return;
                     CompositionTarget.Rendering -= measure;
-                    double fps = changes / measurement.Elapsed.TotalSeconds;
-                    File.WriteAllText(report, String.Format("{0}：256 帧，跑步实测 {1:F1} FPS（{2} 次画面切换）。",
-                        fps >= 28.5 && fps <= 31 ? "通过" : "失败", fps, changes));
+                    double expectedChanges = measurement.Elapsed.TotalSeconds * FramesPerSecond;
+                    double cadence = changes / expectedChanges;
+                    File.WriteAllText(report, String.Format("{0}：60 FPS 时间轴，跑步循环约 {1:F1} FPS（{2} 帧切换 / 理想 {3:F0} 帧）。",
+                        cadence >= 0.8 && cadence <= 1.05 ? "通过" : "失败", cadence * FramesPerSecond, changes, expectedChanges));
                     Close();
                 };
                 CompositionTarget.Rendering += measure;
@@ -288,3 +294,4 @@ internal sealed class PetWindow : Window
         };
     }
 }
+

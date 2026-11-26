@@ -28,13 +28,13 @@
 - 约 26 秒无互动后做出等待动作。
 - 右键可播放动作、调整大小、切换置顶或退出。
 
-独立版以 30 FPS 时间轴播放，过渡帧由原始图集通过光流补帧生成，跟视使用原来的 16 个方向。
+独立版以 60 FPS 时间轴播放。过渡帧通过原始图集和光流插帧生成，各动作保持原来的大致时长，跑步循环平滑衔接。跟视使用原来的 16 个方向。
 
 ## 从源码构建
 
 在仓库根目录用 PowerShell 运行 `./windows/build.ps1`，生成 `dist/Milofrog.exe`。构建使用系统 .NET Framework 的 C# 编译器，仓库已经包含运行所需的两套图集。
 
-如需更新补帧数据，先安装 Python 依赖，再重新生成图集：
+如需更新 60 FPS 补帧数据，先安装 Python 依赖，再重新生成图集：
 
 ```powershell
 python -m pip install pillow numpy opencv-python
@@ -43,3 +43,5 @@ python windows/interpolate.py codex/spritesheet.png windows/assets/motion30.png
 ```
 
 代码和仓库内的奶蛙素材采用 [MIT 许可](LICENSE)。这是一个独立社区项目。
+
+
